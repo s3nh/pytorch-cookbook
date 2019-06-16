@@ -15,7 +15,7 @@ There is an enourmous problem with deep learnign cases especcialy in self-learne
 
 
 
-<img src = "https://www.iconfinder.com/icons/2993627/emoji_emote_emoticon_emoticons_lol_icon">
+<img src = "https://cdn3.iconfinder.com/data/icons/emoticons-50/24/LOL_emoticon_emoticons_emoji_emote-512.png">
 
 
 # This is not an normal readme file. It will be normal in few days. 
