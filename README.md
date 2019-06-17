@@ -10,8 +10,6 @@ avoid reading the same papers day by day and wasting time for things that I did 
 
 1. Reminders
 
-There is an enourmous problem with deep learnign cases especcialy in self-learner environments (below I listed why):
-
 
 
 
