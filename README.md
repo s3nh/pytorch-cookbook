@@ -52,7 +52,7 @@ Ill try to improve this repo in daily routine
 As you can see, pretrain model which you can download from folder is not something we can be proud of. 
 So you have to treat it like an real toy example as far as it was trained with only 10 epochs :)
 
-<img src = 'images/sunflower_prediction.jpg'>
+<img src = 'images/sunflower_predict.jpg'>
 
 
 # To do 
