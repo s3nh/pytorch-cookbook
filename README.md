@@ -8,16 +8,28 @@
 This repository will contain information which made me crazy to 
 avoid reading the same papers day by day and wasting time for things that I did in the past. 
 
-1. Reminders
+1. Because of lack of comprehensive guides of how to use Pytorch on simple task this repo should be helpful. 
+2. At the very early stage I decided to implement simple vonv nets classifiers to show how Pytorch behave and 
+
+3. to learn how to deal with predictions/transforms on single images. 
 
 
+Repositories contain:
+
+- data loader section
+- Model Architecture section
+- Model training 
+- Prediction on single image
 
 
-<img src = "https://cdn3.iconfinder.com/data/icons/emoticons-50/24/LOL_emoticon_emoticons_emoji_emote-512.png">
+#### Reminder 
+
+Ill try to improve this repo in daily routine
+
+
 
 
 # This is not an normal readme file. It will be normal in few days. 
-### What is going on 
 
 
 
@@ -35,24 +47,10 @@ avoid reading the same papers day by day and wasting time for things that I did 
 
 - <a href = "https://www.kaggle.com/alxmamaev/flowers-recognition"> FLower dataset </a>
 
-- model save 
-- model pred
-- model prepare
-- how to properly use random sampler with pytorch
 
 
 
 # To do 
 
-
-
--Char Rnn
-- Seq 2 Seq
-
-- Time series rnn pred
-
-
-This is part of my #dontgetcrazybecauseyouhavepotential challenge. Give me a like if you like leaving a like pls. I have high leve of self esteem because I am barely sure that nobody will read this . 
-bb
-
+Next: Char - RNN poem generator 
 

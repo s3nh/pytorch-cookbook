@@ -44,7 +44,6 @@ def load_data(train_fraction =0.7):
 
 
 
-
     return data_transform, train_loader, valid_loader
 
     

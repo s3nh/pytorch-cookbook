@@ -22,20 +22,14 @@ class FlowerNet(nn.Module):
         self.fc3 = nn.Linear(16, 5)
 
     def forward(self, x):
-        print(x.shape)
         x = F.relu(self.conv1(x))
-        print(x.shape)
         x = F.max_pool2d(x, 2, 2)
-        print(x.shape)
         x = F.relu(self.conv2(x))
-        print(x.shape)
         x = F.max_pool2d(x, 2, 2)
-        print(x.shape)
         x = F.relu(self.conv3(x))
         x = F.max_pool2d(x, 2, 2)
         x = x.view(x.size(0), -1)
         x = F.relu(self.fc1(x))
-        print(x.shape)
         x = F.relu(self.fc2(x))
         x = self.fc3(x)
         return F.log_softmax(x, dim=1)
@@ -58,11 +52,11 @@ def main():
     model = FlowerNet().to(device)
     optimizer = optim.SGD(model.parameters(), lr = 0.001, momentum = 0.5)
 
-    for epoch in range(1, 10):
+    for epoch in range(1, 100):
         train(model, device, train_loader, optimizer, epoch)
 
     os.makedirs('models', exist_ok=True)
-    torch.save(model.state_dict(), "flower_cnn.pt")
+    torch.save(model.state_dict(), "models/flower_cnn.pt")
 
 
 if __name__ == "__main__":
