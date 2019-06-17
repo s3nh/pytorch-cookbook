@@ -37,7 +37,7 @@ def main():
     device = 'cuda'
     model = load_model()
     print(model)
-    image = load_image('flowers/daisy/8382667241_0f046cecdb_n.jpg')
+    image = load_image('flowers/sunflower/27466794_57e4fe5656.jpg')
     image.show()
     image = T.Resize((224,224))(image)
     image = T.ToTensor()(image)
@@ -45,6 +45,7 @@ def main():
     image = image[None].type('torch.FloatTensor')
     predict = model(image)
     pred = predict.max(1, keepdim=True)[1]
+    print(pred)
     indices = data_indices()
     
     output = list(indices.keys())[list(indices.values()).index(pred[0])]

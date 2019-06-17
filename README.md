@@ -47,7 +47,12 @@ Ill try to improve this repo in daily routine
 
 - <a href = "https://www.kaggle.com/alxmamaev/flowers-recognition"> FLower dataset </a>
 
+### Results
 
+As you can see, pretrain model which you can download from folder is not something we can be proud of. 
+So you have to treat it like an real toy example as far as it was trained with only 10 epochs :)
+
+<img src = 'images/sunflower_prediction.jpg'>
 
 
 # To do 
