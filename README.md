@@ -1,5 +1,5 @@
 # Pytorch daily challenges (hope so)
-
+# IN PROGRESS
 
 
 <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Pytorch_logo.png/800px-Pytorch_logo.png">
