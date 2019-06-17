@@ -28,7 +28,17 @@ There is an enourmous problem with deep learnign cases especcialy in self-learne
 
 
 ## Mnist cnns 
+
+#### Dataset is just data.utils.dataset MNIST
+
+
+
+
 ## Flower detection 
+
+#### Data source
+
+- <a href = "https://www.kaggle.com/alxmamaev/flowers-recognition"> FLower dataset </a>
 
 - model save 
 - model pred
