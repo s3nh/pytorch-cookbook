@@ -1,19 +1,16 @@
-# Pytorch daily challenges (hope so)
-# IN PROGRESS
-
+### Pytorch daily challenges 
 
 <img src = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Pytorch_logo.png/800px-Pytorch_logo.png">
 
 
-This repository will contain information which made me crazy to 
-avoid reading the same papers day by day and wasting time for things that I did in the past. 
+#### Why 
 
 1. Because of lack of comprehensive guides of how to use Pytorch on simple task this repo should be helpful. 
 2. At the very early stage I decided to implement simple vonv nets classifiers to show how Pytorch behave and 
-
 3. to learn how to deal with predictions/transforms on single images. 
 
 
+<div class  = "badge">Description</div>
 Repositories contain:
 
 - data loader section
@@ -21,41 +18,31 @@ Repositories contain:
 - Model training 
 - Prediction on single image
 
+#### Reminder
 
-#### Reminder 
-
-Ill try to improve this repo in daily routine
-
-
-
-
-# This is not an normal readme file. It will be normal in few days. 
-
-
+If you 
 
 
 ## Mnist cnns 
-
-#### Dataset is just data.utils.dataset MNIST
-
 
 
 
 ## Flower detection 
 
-#### Data source
+- Dataset 
 
 - <a href = "https://www.kaggle.com/alxmamaev/flowers-recognition"> FLower dataset </a>
 
-### Results
+
+#### Results
+
 
 As you can see, pretrain model which you can download from folder is not something we can be proud of. 
 So you have to treat it like an real toy example as far as it was trained with only 10 epochs :)
 
 <img src = 'images/sunflower_predict.jpg'>
 
-
-# To do 
+####  Next in line 
 
 Next: Char - RNN poem generator 
 
