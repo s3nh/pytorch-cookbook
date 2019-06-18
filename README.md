@@ -42,7 +42,15 @@ So you have to treat it like an real toy example as far as it was trained with o
 
 <img src = 'images/sunflower_predict.jpg'>
 
-####  Next in line 
 
-Next: Char - RNN poem generator 
+#### Jokes generator 
+
+Short jokes generator using RNN. 
+
+
+- dataset
+
+
+https://www.kaggle.com/abhinavmoudgil95/short-jokes
+
 

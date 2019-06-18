@@ -37,7 +37,7 @@ def main():
     device = 'cuda'
     model = load_model()
     print(model)
-    image = load_image('flowers/sunflower/27466794_57e4fe5656.jpg')
+    image = load_image('flowers/tulip/11746548_26b3256922_n.jpg')
     image.show()
     image = T.Resize((224,224))(image)
     image = T.ToTensor()(image)
