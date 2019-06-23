@@ -4,7 +4,7 @@ import random
 import time
 import math
 import torch
-
+from torch.autograd import Variable
 
 
 # Reading all data
@@ -24,11 +24,8 @@ def read_file(filename):
 def char_tensor(string):
     tensor = torch.zeros(len(string)).long()
     for c in range(len(string)):
-        try:
-            tensor[c] = all_character.index(string[c]))
-        except:
-            continue
-    return tensor
+        tensor[c] = all_characters.index(string[c])
+    return Variable(tensor)
 
 
 
