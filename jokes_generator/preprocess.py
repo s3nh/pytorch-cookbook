@@ -10,6 +10,9 @@ import sys
 import random
 
 
+from model import * 
+
+
 def load_file():
     with open('data/short-jokes/shortjokes.csv', 'r') as outfile:
         records = [line.split() for line in outfile]
@@ -33,6 +36,7 @@ def random_set(set_len, batch_size):
     # Add cuda
 
     return inp, target
+
 
 
 
