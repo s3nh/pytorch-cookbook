@@ -18,9 +18,6 @@ Repositories contain:
 - Model training 
 - Prediction on single image
 
-#### Reminder
-
-If you 
 
 
 ## Mnist cnns 
@@ -53,4 +50,8 @@ Short jokes generator using RNN.
 
 https://www.kaggle.com/abhinavmoudgil95/short-jokes
 
+#### LeNEt 5
 
+- based on MNIST dataset
+
+- Network architecture: <a href = 'https://engmrk.com/lenet-5-a-classic-cnn-architecture/'>click</a>
