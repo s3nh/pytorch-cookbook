@@ -18,3 +18,13 @@ model = LeNet().to(device)
 print(model)
 
 
+def accuracy(true, pred):
+    preds = pred.max(1, keepdim=True)[1]
+    correct = preds.eq(y.view_as(preds)).sum()
+    acc = correct.float()/preds.shape
+    return acc
+
+
+
+
+
