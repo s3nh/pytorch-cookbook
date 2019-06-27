@@ -55,3 +55,11 @@ https://www.kaggle.com/abhinavmoudgil95/short-jokes
 - based on MNIST dataset
 
 - Network architecture: <a href = 'https://engmrk.com/lenet-5-a-classic-cnn-architecture/'>click</a>
+
+
+
+### GAN 
+
+27062019
+
+Add GAN Implementation
