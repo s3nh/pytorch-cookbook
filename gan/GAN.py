@@ -145,4 +145,119 @@ class Discriminator(nn.Module):
        return x
 # To do  - Define GAN Class
 
+class GAN(object):
+
+
+    def __init__(self, args):
+
+        self.epoch = args.epoch
+        self.sample_num = 100
+        self.batch_size = args.batch_size
+        self.save_dir = args.save_dir
+        self.result_dir  = args.result_dir
+        self.dataset = args.dataset
+        self.gpu_mode = args.gpu_mode
+        self.input_size = args.input_size
+
+
+        self.data_loader = dataloader(self.dataset, self.input_size, self.batch_size)
+
+        data = self.data_loader.__iter__().__next__()[0]
+
+        self.G = Generator(input_dim = self.z_dim, output_dim = data.shape[1], input_size = self.input_size)
+        self.D = Discriminator(input_dim = data.shape[1], output_dim=1, input_size = self.input_size)
+
+        self.G_optimizer = optim.Adam(self.G.parameters(), lr=args.lrG, betas=(args.beta1, args.beta2))
+        self.D_optimizer = optim.Adam(self.D.parameters(), lr = args.lrD, betas= (args.beta1, args.beta2))
+
+        if self.gpu_mode:
+            self.G.cuda()
+            self.D.cuda()
+            self.BCE_loss = nn.BCELoss().cuda()
+        else:
+            self.BCE_loss = nn.BCELoss()
+
+        
+
+
+        self.sample_z_ = torch.rand((self.batch_size, self.z_dim))
+        
+
+        if self.gpu_mode:
+            self.sample_z_ = self.sample_z_.cuda()
+
+   
+    def train():
+
+        self.train_hist = {}
+        self.train_hist['D_loss'] = []
+        self.train_hist['G_loss'] = []
+        self.train_hist['per_epoch_time'] = []
+        self.train_hist['total_time'] = []
+
+
+
+        self._y_real_ = torch.ones(self.batch_size, 1)
+        self.y_fake_ = torch.zeros(self.batch_size, 1)
+
+        if self.gpu_mode:
+            self._y_real_ = self.y_real_.cuda()
+            self._y_fake_ = self.y_fake_.cuda()
+
+        self.D.train()
+        for epoch in range(self.epoch):
+            self.G.train()
+
+
+            for iter, (x_, _) in enumerate(self.data_loader):
+                if iter == self.data_loader.dataset.__len__() // self.batch_size:
+
+                    break
+                z_ = torch.rand((self.batch_size, self.z_dim))
+                if self.gpu_mode:
+                    x_, z_ = x_.cuda(), z_.cuda()
+
+                # Update Discriminator network
+
+
+                self.D_optmizer.zero_grad()
+
+                D_real = self.D(x_)
+                D_real_loss = self.BCE_loss(D_real, self.y_real)
+
+
+                G_ =  self.G(z)
+                D_fake = self.D(G_)
+                D_fake_loss = self.BCE_loss(D_fake, self.y_fake_)
+
+                D_loss = D_real_loss + D_fake_loss
+                self.train_hist['D_loss'].append(D_loss.item())
+
+
+                D_loss.backward()
+                self.D_optimizer.step()
+
+                # Update Generator Network
+
+                G_ = self.G(z_)
+                D_fake = self.D(G_)
+                G_loss = self.BCE_loss(D_fake, self.y_real_)
+                self.train_hist['G_loss'].append(G_loss.item())
+
+
+                G_loss.backward()
+                self.G_optimizer.step()
+
+
+            self.train_hist['per_epoch_time'].append(time.time() - epoch_start_time)
+            with torch.no_grad():
+                self.visualize_results((epoch+1))
+
+        self.save()
+        utils.generate_animation(self.result_dir + '/' + self.dataset + '/' + self.model_name + '/' + self.model_name, self.epoch)
+        utils.loss_plot(self.train_hist, os.path.join(self.save_dir, self.dataset, self.model_name), self.model_name)
+
+    
+
+            
 
