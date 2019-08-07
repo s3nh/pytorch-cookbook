@@ -13,7 +13,13 @@ import torchvision.transforms as transforms
 from torch.utils.data.sampler import SubsetRandomSampler
 
 def build_args():
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--num_workers', type = int, help='Number of workers')
+    parser.add_argument('--batch_size', type = int, help = 'Batch size')
+    parser.add_argument('--valid_size', type = float, help = 'Validation dataset size')
+    parser.add_argument('--rotation', type = int, help = 'random Rotation')
+    args = parser.parse_args()
+    return args
 
 class CifarLoader():
 
@@ -54,7 +60,6 @@ class CifarLoader():
 
         return train_sampler, valid_sampler
 
-
     def data_loader(self):
         train_loader = torch.utils.data.DataLoader(self.train_data, batch_size=self.batch_size, 
                 sampler = self.train_sampler, num_workers = self.num_workers)
@@ -64,14 +69,10 @@ class CifarLoader():
                 num_workers=self.num_workers)
         return train_loader, valid_loader, test_loader
 
-
-
-
-
 def main():
-
+    args = build_args()
     # DataSet Load
-    cf = CifarLoader(num_workers=-1, batch_size=16, valid_size=0.2, random_rotation=10)
+    cf = CifarLoader(num_workers=args.num_workers, batch_size=args.batch_size, valid_size=args.valid_size, random_rotation=args.rotation)
 
 if __name__ == "__main__":
     main()
