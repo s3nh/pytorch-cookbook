@@ -48,8 +48,7 @@ class ConvAutoEncoder(nn.Module):
         self.pool = nn.MaxPool2d(2,2)
         self.t_conv1 =  nn.ConvTranspose2d(4, 16, 2, stride=2)
         self.t_conv2 = nn.ConvTranspose2d(16, 1, 2, stride = 2)
-        self.criterion = nn.MSELoss()
-    
+
     def forward(self, x):
         x = F.relu(self.conv1(x))
         x = self.pool(x)
@@ -59,17 +58,40 @@ class ConvAutoEncoder(nn.Module):
         x = F.sigmoid(self.t_conv2(x))
         return x
 
-
 class TrainNetwork(DataPreparing):
-    pass
+    def __init__(self):
+        self.train_loss = 0.0
+        self.model = ConvAutoEncoder()
+        self.criterion = nn.MSELoss()
+        self.train_loader, self.test_loader = DataPreparing.data_loader(self)
+        self.root = DataPreparing().root
+        #self.optimizer = torch.optim(self.model.parameters(), lr = 0.001)
+        self.n_epochs = 30
+        self.criterion = nn.MSELoss()
+        print(self.model)
 
-    
+    def train_net(self):
+        """ 
+        Neural network training 
+        data_iter -> optimizer grad -> loss backward -> optimizer step -> train_loss ++
+        """
+        for epoch in range(1, self.n_epochs+1):
+            for data in self.train_loader:
+                images, _ = data
+                self.optimizer.zero_grad()
+                outputs = self.model(images)
+                loss = self.criterion(outputs, images)
+                loss.backward()
+                self.optimizer.step()
+                self.train_loss += loss.item()*images.size(0)
+
+        self.train_loss = self.train_loss/len(self.train_loader)
+        print("Epoch {} Training Loss {}".format(epoch, self.train_loss))
+
+
 def main():
-    model = ConvAutoEncoder()
-    print(model)
-    dp = DataPreparing()
     tn = TrainNetwork()
-    print(tn.num_workers)
+    tn.train_net()
 
 if __name__ == "__main__":
     main()
