@@ -3,6 +3,7 @@ DCGAN paper
 
 https://arxiv.org/pdf/1511.06434.pdf
 """
+import argparse
 import os 
 import torch
 from torch.utils.data import DataLoader 
@@ -17,6 +18,14 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import pickle
+
+def build_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--n_epochs', type = int, help = 'number of epochs')
+    parser.add_argument('--batch_size', type = int, help =  'batch size')
+    args = parser.parse_args()
+    return args
+
 
 def conv(in_channels, out_channels, kernel_size, stride=2, padding=1, batch_norm=True):
     layers=[]
@@ -72,7 +81,7 @@ class Generator(nn.Module):
         return out
 
 class DCGan(Discriminator, Generator):
-    def __init__(self, image_dir='data/cyclegan', image_size = 128, batch_size = 16, num_workers=0, train_on_gpu=True, print_every=30):
+    def __init__(self, image_dir='data/cyclegan', image_size = 128, batch_size = 16, num_workers=0, train_on_gpu=True, print_every=30, num_epochs = 5):
         super().__init__()
         self.image_dir=image_dir
         self.image_size = image_size
@@ -87,6 +96,8 @@ class DCGan(Discriminator, Generator):
         print("{}".format(self.d_optimizer))
         self.train_on_gpu =train_on_gpu
         self.print_every = print_every
+        self.num_epochs = num_epochs
+
         if self.train_on_gpu:
             self.D = self.D.cuda()
             self.G = self.G.cuda()
@@ -125,13 +136,13 @@ class DCGan(Discriminator, Generator):
                num_workers = self.num_workers)
        return train_loader, test_loader
 	
-    def training_(self, num_epochs=5, sample_size = 16):
+    def training_(self,  sample_size = 16):
         print("training started")
         samples = []
         losses = []
         fixed_z = np.random.uniform(-1, 1, size =(sample_size, self.z_size))
         fixed_z = torch.from_numpy(fixed_z).float()
-        for epoch in range(num_epochs):
+        for epoch in range(self.num_epochs):
             for batch_i, (real_images, _) in enumerate(self.train_loader):
                 batch_size = real_images.size(0)
                 self.d_optimizer.zero_grad()
@@ -175,16 +186,18 @@ class DCGan(Discriminator, Generator):
             samples.append(samples_z)
             self.G.train()
 
-        with open('train_samples.pkl', 'wb') as f:
-            pickle.dump(samples, f)
+            with open('train_samples_{}.pkl'.format(epoch), 'wb') as f:
+                pickle.dump(samples, f)
 
-    def define_parameters(D, G, lr_=1e-3, beta1=0.5, beta2=0.999):
-        d_optimizer = optim.Adam(params = D.parameters(), lr=0.0002, betas= [beta1, beta2])
-        g_optimizer = optim.Adam(params = G.parameters(), lr=0.0002, betas= [beta1, beta2])
+    def define_parameters(D, G, lr_=0.02, beta1=0.5, beta2=0.999):
+        d_optimizer = optim.Adam(params = D.parameters(), lr=0.002, betas= [beta1, beta2])
+        g_optimizer = optim.Adam(params = G.parameters(), lr=0.002, betas= [beta1, beta2])
         return d_optimizer, g_optimizer
 		
 def main():
-    cg=DCGan()
+    args = build_args()
+
+    cg=DCGan(num_epochs = args.n_epochs, batch_size = args.batch_size)
     cg.training_() 
 
 if __name__ == '__main__':
