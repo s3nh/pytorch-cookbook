@@ -10,8 +10,6 @@ import torchvision
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
 
-
-# Data Visualisation 
 import matplotlib.pyplot as plt 
 import numpy as np 
 import warnings 
@@ -73,7 +71,7 @@ class Generator(nn.Module):
         out = F.tanh(out)
         return out
 
-class CycleGan(Discriminator, Generator):
+class DCGan(Discriminator, Generator):
     def __init__(self, image_dir='data/cyclegan', image_size = 128, batch_size = 16, num_workers=0, train_on_gpu=True, print_every=30):
         super().__init__()
         self.image_dir=image_dir
@@ -89,6 +87,9 @@ class CycleGan(Discriminator, Generator):
         print("{}".format(self.d_optimizer))
         self.train_on_gpu =train_on_gpu
         self.print_every = print_every
+        if self.train_on_gpu:
+            self.D = self.D.cuda()
+            self.G = self.G.cuda()
 
     def real_loss(self, D_out, smooth=False, train_on_gpu=False):
         batch_size=D_out.size(0)
@@ -124,7 +125,7 @@ class CycleGan(Discriminator, Generator):
                num_workers = self.num_workers)
        return train_loader, test_loader
 	
-    def training_(self, num_epochs=50, sample_size = 16):
+    def training_(self, num_epochs=5, sample_size = 16):
         print("training started")
         samples = []
         losses = []
@@ -133,13 +134,11 @@ class CycleGan(Discriminator, Generator):
         for epoch in range(num_epochs):
             for batch_i, (real_images, _) in enumerate(self.train_loader):
                 batch_size = real_images.size(0)
-                # Remove grad
                 self.d_optimizer.zero_grad()
-
+                if self.train_on_gpu:
+                    real_images = real_images.cuda()                    
                 D_real = self.D(real_images)
                 d_real_loss = self.real_loss(D_real)
-                
-                # Fake images generation
 
                 z = np.random.uniform(-1, 1, size=(self.batch_size, self.z_size))
                 z = torch.from_numpy(z).float()
@@ -147,13 +146,9 @@ class CycleGan(Discriminator, Generator):
                     z=z.cuda()
                 
                 fake_images = self.G(z)
-                # Interpretation - egenerate discriminator 
-                # result are put into fake_loss function
-                # which is a part of overall loss
                 D_fake = self.D(fake_images)
                 d_fake_loss  = self.fake_loss(D_fake)
                 d_loss = d_real_loss + d_fake_loss
-                # Backprop on discriminator prop
                 d_loss.backward()
                 self.d_optimizer.step()
                 
@@ -165,22 +160,20 @@ class CycleGan(Discriminator, Generator):
                 if self.train_on_gpu:
                     z = z.cuda()
                 fake_images = self.G(z)
-
-
                 D_fake = self.D(fake_images)
                 g_loss = self.real_loss(D_fake)
-
                 g_loss.backward()
                 self.g_optimizer.step()
 
                 if batch_i % self.print_every == 0:
+                    print("{} {} {}".format(batch_i, d_loss.item(), g_loss.item()))
                     losses.append((d_loss.item(), g_loss.item()))
             self.G.eval()
             if self.train_on_gpu:
                 fixed_z = fixed_z.cuda()
             samples_z = self.G(fixed_z)
             samples.append(samples_z)
-            G.train()
+            self.G.train()
 
         with open('train_samples.pkl', 'wb') as f:
             pickle.dump(samples, f)
@@ -191,7 +184,7 @@ class CycleGan(Discriminator, Generator):
         return d_optimizer, g_optimizer
 		
 def main():
-    cg=CycleGan()
+    cg=DCGan()
     cg.training_() 
 
 if __name__ == '__main__':
