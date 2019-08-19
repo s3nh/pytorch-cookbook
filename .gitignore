@@ -1,4 +1,5 @@
-
+/object_detection/data/
 data/
 gan/data/
 /flower_classifier/flowers/*
+*.pkl
