@@ -3,3 +3,4 @@ data/
 gan/data/
 /flower_classifier/flowers/*
 *.pkl
+*.txt
