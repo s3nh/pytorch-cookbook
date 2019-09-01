@@ -7,8 +7,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim 
 from torchvision import datasets, transforms
-
-from flower_classifier import load_data
+from src.utils import load_data
 
 class FlowerNet(nn.Module):
     def __init__(self):
@@ -46,7 +45,6 @@ def train(model, device, train_loader, optimizer, epoch):
         optimizer.step()
 
 def main():
-
     datatransform, train_loader, valid_loader = load_data()
     device = torch.device('cuda')
     model = FlowerNet().to(device)
@@ -57,7 +55,6 @@ def main():
 
     os.makedirs('models', exist_ok=True)
     torch.save(model.state_dict(), "models/flower_cnn.pt")
-
 
 if __name__ == "__main__":
     main()
